@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vermont Running Groups</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fraunces:wght@600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #0a1628;
+            --color-surface: #152238;
+            --color-surface-elevated: #1e2d47;
+            --color-primary: #1da1f2;
+            --color-primary-glow: rgba(29, 161, 242, 0.2);
+            --color-accent: #0084d4;
+            --color-text: #e8edf4;
+            --color-text-dim: #8892b0;
+            --color-border: #2a3a55;
+            --font-display: 'Fraunces', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 1.5rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 3rem;
+            --radius-sm: 0.75rem;
+            --radius-md: 1rem;
+            --radius-lg: 1.5rem;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-bg);
+            color: var(--color-text);
+            min-height: 100vh;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.03;
+            background-image: 
+                repeating-linear-gradient(45deg, transparent, transparent 35px, var(--color-primary) 35px, var(--color-primary) 36px),
+                repeating-linear-gradient(-45deg, transparent, transparent 35px, var(--color-accent) 35px, var(--color-accent) 36px);
+            animation: patternSlide 60s linear infinite;
+        }
+
+        @keyframes patternSlide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 100%;
+            padding: var(--spacing-md);
+            padding-bottom: var(--spacing-xl);
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                max-width: 90%;
+                margin: 0 auto;
+                padding: var(--spacing-lg);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                max-width: 1200px;
+            }
+        }
+
+        /* Header */
+        header {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .header-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .logo-container {
+            flex-shrink: 0;
+            width: 160px;
+            height: 160px;
+            background: white;
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        .header-text {
+            flex: 1;
+        }
+
+        @media (max-width: 500px) {
+            .header-top {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .logo-container {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(0, 212, 170, 0.05), 
+                transparent
+            );
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: var(--spacing-sm);
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--color-text-dim);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            border: 1px solid var(--color-border);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            position: relative;
+            animation: pulse 2s infinite;
+        }
+
+        .pulse-dot::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--color-primary);
+            border-radius: 50%;
+            animation: pulseRing 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes pulseRing {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        /* Filter/Search Bar */
+        .controls {
+            background: var(--color-surface);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            background: var(--color-surface-elevated);
+            border: 2px solid var(--color-border);
+            border-radius: var(--radius-sm);
+            color: var(--color-text);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-primary-glow);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--color-text-dim);
+            pointer-events: none;
+        }
+
+        /* Day Sections */
+        .day-section {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--color-border);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .day-section:nth-child(1) { animation-delay: 0.1s; }
+        .day-section:nth-child(2) { animation-delay: 0.15s; }
+        .day-section:nth-child(3) { animation-delay: 0.2s; }
+        .day-section:nth-child(4) { animation-delay: 0.25s; }
+        .day-section:nth-child(5) { animation-delay: 0.3s; }
+        .day-section:nth-child(6) { animation-delay: 0.35s; }
+        .day-section:nth-child(7) { animation-delay: 0.4s; }
+        .day-section:nth-child(8) { animation-delay: 0.45s; }
+
+        .day-section:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary);
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 2px solid var(--color-border);
+        }
+
+        .day-name {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 700;
+            color: var(--color-text);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .day-icon {
+            font-size: 1.5rem;
+        }
+
+        .run-count {
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            color: white;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px var(--color-primary-glow);
+            animation: countPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes countPop {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Run Items */
+        .run-item {
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            background: var(--color-surface-elevated);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--color-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .run-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--color-primary), var(--color-accent));
+            transition: width 0.3s ease;
+        }
+
+        .run-item:hover {
+            background: var(--color-bg);
+            border-color: var(--color-primary);
+            transform: translateX(8px);
+        }
+
+        .run-item:hover::before {
+            width: 100%;
+            opacity: 0.1;
+        }
+
+        .run-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .location {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .location-icon {
+            color: var(--color-primary);
+            font-size: 1rem;
+        }
+
+        .time {
+            color: var(--color-text-dim);
+            font-size: 0.9375rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .time-icon {
+            color: var(--color-accent);
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--color-text-dim);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto var(--spacing-md);
+            border: 3px solid var(--color-border);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--color-text-dim);
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 2px dashed var(--color-border);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-md);
+            opacity: 0.5;
+        }
+
+        /* Error State */
+        .error {
+            background: rgba(255, 107, 157, 0.1);
+            color: var(--color-accent);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-lg);
+            border: 1px solid var(--color-accent);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 390px) {
+            .container {
+                padding: var(--spacing-sm);
+            }
+
+            header {
+                padding: var(--spacing-md);
+            }
+
+            .day-section {
+                padding: var(--spacing-md);
+            }
+
+            .run-item {
+                padding: var(--spacing-sm);
+            }
+        }
+
+        /* Pull to refresh hint */
+        .refresh-hint {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            color: var(--color-text-dim);
+            opacity: 0;
+            animation: fadeInOut 3s ease-in-out;
+            box-shadow: var(--shadow-md);
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(10px); }
+            10%, 90% { opacity: 1; transform: translateY(0); }
+        }
+
+        .refresh-hint.show {
+            animation: fadeInOut 3s ease-in-out;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: var(--spacing-lg);
+            right: var(--spacing-lg);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            z-index: 100;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .scroll-top::before {
+            content: '↑';
+            font-size: 1.5rem;
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-top">
+                    <div class="logo-container">
+                        <img src="image/FF VT Logo (1).jpg" alt="Fleet Feet" id="logo">
+                    </div>
+                    <div class="header-text">
+                        <h1>🏃 Vermont Running Groups</h1>
+                        <p class="subtitle">Find your perfect running crew in the Green Mountain State</p>
+                    </div>
+                </div>
+                <div class="status-bar">
+                    <div class="status-indicator">
+                        <div class="pulse-dot"></div>
+                        <span id="lastUpdated">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="controls">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input 
+                    type="text" 
+                    class="search-input" 
+                    id="searchInput" 
+                    placeholder="Search by location, day, or time..."
+                    autocomplete="off"
+                >
+            </div>
+        </div>
+
+        <div id="content">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading running groups...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-top" id="scrollTop"></div>
+    <div class="refresh-hint" id="refreshHint">Data refreshed!</div>
+
+    <script>
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTsUtmKPq5DdEAVNlPZvQP7hbo7ZwAiclhKOGuhxPnOHrMxSr4emIUJZQP2KIIh2f3X89rOL3A7I8n1/pub?gid=0&single=true&output=csv';
+        const REFRESH_INTERVAL = 60000;
+        let refreshTimer;
+        let allRuns = {};
+        let currentSearchTerm = '';
+
+        // Day icons mapping
+        const dayIcons = {
+            'Monday': '🌙',
+            'Tuesday': '🔥',
+            'Wednesday': '⚡',
+            'Thursday': '🌟',
+            'Friday': '🎉',
+            'Saturday': '☀️',
+            'Sunday': '🌈',
+            'Rotating': '🔄'
+        };
+
+        async function fetchRunningGroups() {
+            try {
+                const response = await fetch(CSV_URL);
+                if (!response.ok) throw new Error('Failed to fetch data');
+                
+                const csvText = await response.text();
+                allRuns = parseCSV(csvText);
+                displayRuns(allRuns, currentSearchTerm);
+                updateTimestamp();
+                showRefreshHint();
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                document.getElementById('content').innerHTML = `
+                    <div class="error">
+                        <strong>⚠️ Unable to load data.</strong><br>
+                        Please check your connection and try again.
+                    </div>
+                `;
+            }
+        }
+
+        function parseCSV(csv) {
+            const lines = csv.trim().split('\n');
+            const data = {};
+            let currentDay = '';
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const parts = line.split(',');
+                const day = parts[0]?.trim();
+                const location = parts[1]?.trim();
+                const time = parts[2]?.trim();
+                
+                if (day) {
+                    currentDay = day;
+                }
+                
+                if (location && time && currentDay) {
+                    if (!data[currentDay]) {
+                        data[currentDay] = [];
+                    }
+                    data[currentDay].push({ 
+                        location, 
+                        time,
+                        day: currentDay
+                    });
+                }
+            }
+            
+            return data;
+        }
+
+        function filterRuns(runs, searchTerm) {
+            if (!searchTerm) return runs;
+            
+            const term = searchTerm.toLowerCase();
+            const filtered = {};
+            
+            Object.keys(runs).forEach(day => {
+                const dayMatches = day.toLowerCase().includes(term);
+                const filteredItems = runs[day].filter(run => 
+                    dayMatches ||
+                    run.location.toLowerCase().includes(term) ||
+                    run.time.toLowerCase().includes(term)
+                );
+                
+                if (filteredItems.length > 0) {
+                    filtered[day] = filteredItems;
+                }
+            });
+            
+            return filtered;
+        }
+
+        function displayRuns(runs, searchTerm = '') {
+            const filtered = filterRuns(runs, searchTerm);
+            const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', 'Rotating'];
+            let html = '';
+            
+            daysOrder.forEach(day => {
+                if (filtered[day] && filtered[day].length > 0) {
+                    const icon = dayIcons[day] || '📍';
+                    html += `
+                        <div class="day-section">
+                            <div class="day-header">
+                                <div class="day-name">
+                                    <span class="day-icon">${icon}</span>
+                                    ${day}
+                                </div>
+                                <div class="run-count">${filtered[day].length} run${filtered[day].length > 1 ? 's' : ''}</div>
+                            </div>
+                            ${filtered[day].map(run => `
+                                <div class="run-item">
+                                    <div class="location">
+                                        <span class="location-icon">📍</span>
+                                        ${run.location}
+                                    </div>
+                                    <div class="time">
+                                        <span class="time-icon">🕐</span>
+                                        ${run.time}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+            });
+            
+            if (!html) {
+                html = `
+                    <div class="empty-state">
+                        <div class="empty-icon">🔍</div>
+                        <h3>No running groups found</h3>
+                        <p>Try adjusting your search or check back later</p>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('content').innerHTML = html;
+        }
+
+        function updateTimestamp() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour: 'numeric', 
+                minute: '2-digit',
+                hour12: true 
+            });
+            document.getElementById('lastUpdated').textContent = `Updated ${timeString}`;
+        }
+
+        function showRefreshHint() {
+            const hint = document.getElementById('refreshHint');
+            hint.classList.add('show');
+            setTimeout(() => hint.classList.remove('show'), 3000);
+        }
+
+        function startAutoRefresh() {
+            clearInterval(refreshTimer);
+            refreshTimer = setInterval(fetchRunningGroups, REFRESH_INTERVAL);
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            currentSearchTerm = e.target.value;
+            displayRuns(allRuns, currentSearchTerm);
+        });
+
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Initial load
+        fetchRunningGroups();
+        startAutoRefresh();
+        
+        // Logo error handling
+        const logo = document.getElementById('logo');
+        logo.addEventListener('error', function() {
+            // Fallback to a colored placeholder if logo fails to load
+            this.style.display = 'none';
+            this.parentElement.innerHTML = '<div style="font-size: 2rem; font-weight: 900; color: #667eea;">FF</div>';
+        });
+        
+        // Refresh when page becomes visible
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) {
+                fetchRunningGroups();
+            }
+        });
+
+        // Pull to refresh for mobile
+        let touchStartY = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            const touchY = e.touches[0].clientY;
+            const touchDiff = touchY - touchStartY;
+            
+            if (touchDiff > 100 && window.scrollY === 0) {
+                fetchRunningGroups();
+            }
+        });
+    </script>
+</body>
+</html>
